@@ -5,6 +5,6 @@ const isProduction = window.location.hostname !== "localhost";
 
 window.appConfig = {
     API_URL: isProduction
-        ? "https://backend-ao69bagaz-anandadarshans-projects.vercel.app" // NEW backend URL
+        ? "https://backend-peach-eta-71.vercel.app" // NEW backend URL
         : "http://localhost:5000" // local backend
 };
