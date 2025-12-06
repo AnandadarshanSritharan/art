@@ -4,6 +4,13 @@ import { getApiUrl } from './config';
 let socket: Socket;
 
 export const connectSocket = (userId: string, setSocketCallback: (socket: Socket) => void) => {
+    // DISABLE SOCKETS ON VERCEL (Production)
+    // Vercel serverless functions do not support persistent socket connections.
+    if (window.location.hostname !== 'localhost') {
+        console.log('Socket.io disabled in production (Vercel does not support persistent websockets).');
+        return {} as Socket;
+    }
+
     socket = io(getApiUrl());
 
     socket.on('connect', () => {
