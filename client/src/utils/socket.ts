@@ -1,9 +1,10 @@
 import { io, Socket } from 'socket.io-client';
+import { getApiUrl } from './config';
 
 let socket: Socket;
 
 export const connectSocket = (userId: string, setSocketCallback: (socket: Socket) => void) => {
-    socket = io('http://localhost:5000');
+    socket = io(getApiUrl());
 
     socket.on('connect', () => {
         socket.emit('join', userId);

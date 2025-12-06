@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../api/axios';
 import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
+import { getApiUrl } from '../../utils/config';
 
 interface Category {
     _id: string;
@@ -73,8 +74,13 @@ const ArtworkEditPage: React.FC = () => {
                 },
             };
 
+
+
+            // ... (imports remain)
+
+            // Inside component
             const { data } = await api.post('/upload', formData, config);
-            setImage(`http://localhost:5000${data.imagePath}`);
+            setImage(`${getApiUrl()}${data.imagePath}`);
             showToast('Image uploaded successfully!', 'success');
         } catch (error) {
             console.error(error);

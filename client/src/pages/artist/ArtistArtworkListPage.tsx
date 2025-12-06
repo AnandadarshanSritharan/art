@@ -6,6 +6,8 @@ import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
 import { useConfirm } from '../../hooks/useConfirm';
 
+import { getImageUrl } from '../../utils/image';
+
 interface Artwork {
     _id: string;
     title: string;
@@ -16,15 +18,6 @@ interface Artwork {
     image: string;
     stock: number;
 }
-
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    return `http://localhost:5000${imagePath}`;
-};
 
 const ArtistArtworkListPage: React.FC = () => {
     const { userInfo } = useStore();

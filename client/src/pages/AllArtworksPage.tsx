@@ -34,14 +34,7 @@ interface PaginatedResponse {
     hasMore: boolean;
 }
 
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    return `http://localhost:5000${imagePath}`;
-};
+import { getImageUrl } from '../utils/image';
 
 const AllArtworksPage: React.FC = () => {
     const [artworks, setArtworks] = useState<Artwork[]>([]);

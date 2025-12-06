@@ -19,14 +19,7 @@ interface PaginatedResponse {
     hasPrev: boolean;
 }
 
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    return `http://localhost:5000${imagePath}`;
-};
+import { getImageUrl } from '../utils/image';
 
 const ArtistsPage: React.FC = () => {
     const [artists, setArtists] = useState<Artist[]>([]);
@@ -108,8 +101,8 @@ const ArtistsPage: React.FC = () => {
                     key={i}
                     onClick={() => handlePageChange(i)}
                     className={`px-4 py-2 border rounded-lg transition ${i === page
-                            ? 'bg-primary text-white border-primary'
-                            : 'border-gray-300 hover:bg-gray-50'
+                        ? 'bg-primary text-white border-primary'
+                        : 'border-gray-300 hover:bg-gray-50'
                         }`}
                 >
                     {i}

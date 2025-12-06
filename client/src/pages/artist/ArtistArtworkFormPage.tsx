@@ -5,19 +5,12 @@ import api from '../../api/axios';
 import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
 
+import { getImageUrl } from '../../utils/image';
+
 interface Category {
     _id: string;
     name: string;
 }
-
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    return `http://localhost:5000${imagePath}`;
-};
 
 const ArtistArtworkFormPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();

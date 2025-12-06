@@ -4,23 +4,14 @@ import api from '../../api/axios';
 import { useToast } from '../../components/ToastProvider';
 import { useConfirm } from '../../hooks/useConfirm';
 
+import { getImageUrl } from '../../utils/image';
+
 interface Category {
     _id: string;
     name: string;
     description?: string;
     image?: string;
 }
-
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    // If it's already a full URL, return as is
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    // If it's a relative path, prepend the server URL
-    return `http://localhost:5000${imagePath}`;
-};
 
 const CategoryListPage: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);

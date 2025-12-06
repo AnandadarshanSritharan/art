@@ -1,9 +1,11 @@
+import { getApiUrl } from './config';
+
 export const getImageUrl = (imagePath: string | undefined): string => {
     if (!imagePath || typeof imagePath !== 'string') return '';
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
         return imagePath;
     }
-    return `http://localhost:5000${imagePath}`;
+    return `${getApiUrl()}${imagePath}`;
 };
 
 // Generate a data URI SVG avatar with the user's first letter

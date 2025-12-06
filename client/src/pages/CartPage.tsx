@@ -3,14 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Trash2 } from 'lucide-react';
 import useStore from '../store/useStore';
 
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    return `http://localhost:5000${imagePath}`;
-};
+import { getImageUrl } from '../utils/image';
 
 const CartPage: React.FC = () => {
     const { cartItems, removeFromCart } = useStore();

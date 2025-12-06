@@ -10,16 +10,7 @@ interface Category {
     image?: string;
 }
 
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    // If it's already a full URL, return as is
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    // If it's a relative path, prepend the server URL
-    return `http://localhost:5000${imagePath}`;
-};
+import { getImageUrl } from '../utils/image';
 
 const HomePage: React.FC = () => {
     const [categories, setCategories] = useState<Category[]>([]);

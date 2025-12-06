@@ -4,14 +4,7 @@ import api from '../../api/axios';
 import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
 
-// Helper function to get full image URL
-const getImageUrl = (imagePath: string | undefined): string => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
-        return imagePath;
-    }
-    return `http://localhost:5000${imagePath}`;
-};
+import { getImageUrl } from '../../utils/image';
 
 const ArtistProfileEditPage: React.FC = () => {
     const navigate = useNavigate();
