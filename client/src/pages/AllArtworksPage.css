@@ -1,0 +1,18 @@
+/* Masonry Grid Styles */
+.masonry-grid {
+    display: flex;
+    margin-left: -24px;
+    /* gutter size offset */
+    width: auto;
+}
+
+.masonry-grid-column {
+    padding-left: 24px;
+    /* gutter size */
+    background-clip: padding-box;
+}
+
+/* Optional: Add smooth transitions for masonry items */
+.masonry-grid-column>div {
+    transition: all 0.3s ease;
+}
