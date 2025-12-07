@@ -2,25 +2,10 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-
-// Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+const { storage } = require('../config/cloudinaryConfig');
 
 // Configure storage
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDir);
-    },
-    filename: function (req, file, cb) {
-        // Generate unique filename
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, 'artwork-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
+// storage is imported from cloudinaryConfig
 
 // File filter to only accept images
 const fileFilter = (req, file, cb) => {
@@ -52,7 +37,7 @@ router.post('/', upload.single('image'), (req, res) => {
     // Return the file path
     res.json({
         message: 'Image uploaded successfully',
-        imagePath: `/uploads/${req.file.filename}`
+        imagePath: req.file.path
     });
 });
 
@@ -64,7 +49,7 @@ router.post('/multiple', upload.array('images', 5), (req, res) => {
         return res.status(400).json({ message: 'No files uploaded' });
     }
 
-    const imagePaths = req.files.map(file => `/uploads/${file.filename}`);
+    const imagePaths = req.files.map(file => file.path);
 
     res.json({
         message: 'Images uploaded successfully',
