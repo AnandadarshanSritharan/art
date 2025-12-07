@@ -11,7 +11,8 @@ const app = express();
 const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:5173",
-    "https://ceycanvas.com"
+    "https://ceycanvas.com",
+    "https://www.ceycanvas.com"
 ];
 
 app.use(cors({
