@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Upload, ChevronDown, ChevronUp } from 'lucide-react';
 import api from '../api/axios';
 import useStore from '../store/useStore';
-import { getImageUrl } from '../utils/image';
+import { getImageUrl, compressImage } from '../utils/image';
 import Toast, { type ToastType } from '../components/Toast';
 
 interface Order {
@@ -83,7 +83,15 @@ const ProfilePage: React.FC = () => {
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
-        const file = files[0];
+        let file = files[0];
+
+        // Compress image
+        try {
+            file = await compressImage(file);
+        } catch (error) {
+            console.error("Compression failed, using original file", error);
+        }
+
         if (file.size > 5 * 1024 * 1024) {
             setPersonalMessage({ type: 'error', text: 'File is too large (max 5MB)' });
             return;

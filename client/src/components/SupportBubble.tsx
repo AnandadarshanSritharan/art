@@ -3,14 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { MessageCircleQuestion } from 'lucide-react';
 import useStore from '../store/useStore';
 import api from '../api/axios';
+import { useToast } from './ToastProvider';
 
 const SupportBubble: React.FC = () => {
     const { userInfo, openChat, isChatOpen } = useStore();
     const navigate = useNavigate();
+    const { showToast } = useToast();
 
     const handleSupportClick = async () => {
         if (!userInfo) {
-            alert('You need to login to contact support.');
+            showToast('You need to login to contact support.', 'error');
             navigate('/login');
             return;
         }
@@ -60,11 +62,11 @@ const SupportBubble: React.FC = () => {
             if (data && data._id) {
                 openChat(data._id);
             } else {
-                alert('Support is currently unavailable.');
+                showToast('Support is currently unavailable.', 'error');
             }
         } catch (error) {
             console.error('Failed to contact support', error);
-            alert('Failed to contact support');
+            showToast('Failed to contact support', 'error');
         }
     };
 

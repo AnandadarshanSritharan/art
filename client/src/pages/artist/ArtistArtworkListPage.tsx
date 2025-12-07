@@ -71,7 +71,7 @@ const ArtistArtworkListPage: React.FC = () => {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: `Check out "${title}" on ArtGallery`,
+                    title: `Check out "${title}" on CeyCanvas`,
                     text: `I thought you might like this artwork: ${title}`,
                     url: shareUrl,
                 });

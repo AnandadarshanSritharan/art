@@ -16,7 +16,7 @@ const server = http.createServer(app);
 const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:5173",
-    "https://frontend-chi-peach-fzgzfuzz58.vercel.app"
+    "https://ceycanvas.com"
 ];
 
 const io = new Server(server, {

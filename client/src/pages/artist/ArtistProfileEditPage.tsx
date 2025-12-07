@@ -4,7 +4,7 @@ import api from '../../api/axios';
 import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
 
-import { getImageUrl } from '../../utils/image';
+import { getImageUrl, compressImage } from '../../utils/image';
 
 const ArtistProfileEditPage: React.FC = () => {
     const navigate = useNavigate();
@@ -63,8 +63,15 @@ const ArtistProfileEditPage: React.FC = () => {
     };
 
     const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        let file = e.target.files?.[0];
         if (!file) return;
+
+        // Compress image
+        try {
+            file = await compressImage(file);
+        } catch (error) {
+            console.error("Compression failed", error);
+        }
 
         if (file.size > 5 * 1024 * 1024) {
             showToast('File size must be less than 5MB', 'error');

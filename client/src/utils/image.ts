@@ -1,4 +1,25 @@
+import imageCompression from 'browser-image-compression';
 import { getApiUrl } from './config';
+
+export const compressImage = async (file: File): Promise<File> => {
+    // Options for compression
+    const options = {
+        maxSizeMB: 1,          // Target max size 
+        maxWidthOrHeight: 1920, // Max width/height
+        useWebWorker: true,     // Use multi-threading
+        fileType: "image/webp"  // Force conversion to WebP
+    };
+
+    try {
+        console.log(`Original file size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+        const compressedFile = await imageCompression(file, options);
+        console.log(`Compressed file size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+        return compressedFile;
+    } catch (error) {
+        console.error("Image compression error:", error);
+        return file; // Return original if compression fails
+    }
+};
 
 export const getImageUrl = (imagePath: string | undefined): string => {
     if (!imagePath || typeof imagePath !== 'string') return '';

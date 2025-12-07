@@ -87,8 +87,8 @@ const ArtistProfilePage: React.FC = () => {
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: `Check out ${artist.name}'s profile on ArtGallery`,
-                    text: `View this amazing artist's collection on ArtGallery`,
+                    title: `Check out ${artist.name}'s profile on CeyCanvas`,
+                    text: `View this amazing artist's collection on CeyCanvas`,
                     url: shareUrl,
                 });
             } catch (error) {

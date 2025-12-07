@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import { useToast } from '../../components/ToastProvider';
+import { compressImage } from '../../utils/image';
 
 const CategoryFormPage: React.FC = () => {
     const [name, setName] = useState('');
@@ -74,8 +75,17 @@ const CategoryFormPage: React.FC = () => {
         if (!imageFile) return null;
 
         setUploading(true);
+
+        let fileToUpload = imageFile;
+        // Compress image
+        try {
+            fileToUpload = await compressImage(fileToUpload);
+        } catch (error) {
+            console.error("Compression failed", error);
+        }
+
         const formData = new FormData();
-        formData.append('image', imageFile);
+        formData.append('image', fileToUpload);
 
         try {
             const { data } = await api.post('/upload', formData, {

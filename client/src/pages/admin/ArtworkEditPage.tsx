@@ -4,6 +4,7 @@ import api from '../../api/axios';
 import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
 import { getApiUrl } from '../../utils/config';
+import { compressImage } from '../../utils/image';
 
 interface Category {
     _id: string;
@@ -58,8 +59,15 @@ const ArtworkEditPage: React.FC = () => {
     }, [id, navigate, userInfo]);
 
     const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        let file = e.target.files?.[0];
         if (!file) return;
+
+        // Compress image
+        try {
+            file = await compressImage(file);
+        } catch (error) {
+            console.error("Compression failed", error);
+        }
 
         const formData = new FormData();
         formData.append('image', file);
@@ -73,10 +81,6 @@ const ArtworkEditPage: React.FC = () => {
                     Authorization: `Bearer ${userInfo?.token}`,
                 },
             };
-
-
-
-            // ... (imports remain)
 
             // Inside component
             const { data } = await api.post('/upload', formData, config);

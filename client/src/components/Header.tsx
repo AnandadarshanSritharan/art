@@ -51,7 +51,7 @@ const Header: React.FC = () => {
         <header className="glass sticky top-0 z-50 transition-all duration-300">
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 <Link to="/" className="text-3xl font-bold font-serif text-primary tracking-tight">
-                    ArtSpace
+                    CeyCanvas
                 </Link>
 
                 <nav className="hidden md:flex space-x-10">

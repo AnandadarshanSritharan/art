@@ -5,7 +5,7 @@ import api from '../../api/axios';
 import useStore from '../../store/useStore';
 import { useToast } from '../../components/ToastProvider';
 
-import { getImageUrl } from '../../utils/image';
+import { getImageUrl, compressImage } from '../../utils/image';
 
 interface Category {
     _id: string;
@@ -95,7 +95,15 @@ const ArtistArtworkFormPage: React.FC = () => {
 
         const formData = new FormData();
         for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+            let file = files[i];
+
+            // Compress image
+            try {
+                file = await compressImage(file);
+            } catch (error) {
+                console.error("Compression failed", error);
+            }
+
             if (file.size > 5 * 1024 * 1024) {
                 showToast(`File ${file.name} is too large (max 5MB)`, 'error');
                 return;

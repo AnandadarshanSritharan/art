@@ -15,17 +15,24 @@ const getArtworks = asyncHandler(async (req, res) => {
     // Build query
     const query = {};
 
-    // Search by artwork title OR artist name
+    // Search by artwork title, artist name, OR category name
     if (search) {
         const User = require('../models/User');
+        const Category = require('../models/Category');
+
         const artists = await User.find({
             name: { $regex: search, $options: 'i' },
             isArtist: true
         }).select('_id');
 
+        const categories = await Category.find({
+            name: { $regex: search, $options: 'i' }
+        }).select('_id');
+
         query.$or = [
             { title: { $regex: search, $options: 'i' } },
-            { artist: { $in: artists.map(a => a._id) } }
+            { artist: { $in: artists.map(a => a._id) } },
+            { category: { $in: categories.map(c => c._id) } }
         ];
     }
 
