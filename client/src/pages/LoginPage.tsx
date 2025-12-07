@@ -35,23 +35,23 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-stone-50 flex">
+        <div className="min-h-screen bg-stone-50 flex flex-col lg:flex-row">
             {/* Left Side - Login Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
+            <div className="w-full lg:w-1/2 flex items-center justify-center px-4 md:px-6 py-8 md:py-12">
                 <div className="w-full max-w-md">
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-bold mb-2 font-serif text-gray-900">Welcome Back</h1>
+                    <div className="text-center mb-6 md:mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold mb-2 font-serif text-gray-900">Welcome Back</h1>
                         <p className="text-gray-500">Sign in to access your account</p>
                     </div>
 
                     {error && (
                         <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm flex items-center border border-red-100">
-                            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             {error}
                         </div>
                     )}
 
-                    <form onSubmit={submitHandler} className="space-y-6">
+                    <form onSubmit={submitHandler} className="space-y-5 md:space-y-6">
                         <div>
                             <label className="block text-gray-700 text-sm font-bold mb-2 ml-1">Email Address</label>
                             <input
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
                                 placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50 focus:bg-white"
+                                className="w-full px-4 md:px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-gray-50 focus:bg-white text-base"
                                 required
                             />
                         </div>
@@ -76,13 +76,13 @@ const LoginPage: React.FC = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-base md:text-lg hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         >
                             Sign In
                         </button>
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+                    <div className="mt-6 md:mt-8 pt-6 border-t border-gray-200 text-center">
                         <p className="text-gray-600 mb-2">New to our platform?</p>
                         <Link
                             to={redirect ? `/register?redirect=${redirect}` : '/register'}

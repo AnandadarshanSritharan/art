@@ -82,7 +82,7 @@ const ArtistProfilePage: React.FC = () => {
     const handleShareProfile = async () => {
         if (!artist?._id) return;
 
-        const shareUrl = `${window.location.origin}/artist/${artist._id}`;
+        const shareUrl = `${window.location.origin}/artists/${artist._id}`;
 
         if (navigator.share) {
             try {
@@ -146,7 +146,7 @@ const ArtistProfilePage: React.FC = () => {
                     backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
                 }}></div>
 
-                <div className="container mx-auto px-4 py-12 relative">
+                <div className="container mx-auto px-4 py-8 md:py-12 relative">
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8 max-w-6xl mx-auto">
                         <div className="flex-shrink-0">
                             {artist.profileImage ? (
@@ -165,7 +165,7 @@ const ArtistProfilePage: React.FC = () => {
                         </div>
 
                         <div className="flex-grow text-center md:text-left">
-                            <h1 className="text-4xl md:text-5xl font-bold font-serif text-white mb-3 tracking-tight drop-shadow-lg">{artist.name}</h1>
+                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-serif text-white mb-3 tracking-tight drop-shadow-lg">{artist.name}</h1>
 
                             {artist.bio && (
                                 <div className="prose prose-lg mb-6 max-w-3xl">
@@ -173,7 +173,7 @@ const ArtistProfilePage: React.FC = () => {
                                 </div>
                             )}
 
-                            <div className="flex flex-col md:flex-row items-center gap-5">
+                            <div className="flex flex-col sm:flex-row md:flex-row items-center justify-center md:justify-start gap-3 md:gap-5">
                                 {(!userInfo || userInfo._id !== artist._id) && (
                                     <button
                                         onClick={handleStartChat}
@@ -300,7 +300,7 @@ const ArtistProfilePage: React.FC = () => {
                                             </h3>
                                             <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                                                 <span className="text-xl font-bold text-gray-900 font-serif">
-                                                    ${artwork.price.toLocaleString()}
+                                                    Rs {artwork.price.toLocaleString()}
                                                 </span>
                                                 <span className="text-xs text-gray-500 uppercase tracking-wider">
                                                     {artwork.category.name}

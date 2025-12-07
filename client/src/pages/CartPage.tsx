@@ -17,8 +17,8 @@ const CartPage: React.FC = () => {
 
     return (
 
-        <div className="container mx-auto px-4 py-16 min-h-[calc(100vh-80px)]">
-            <h1 className="text-4xl font-bold mb-10 font-serif text-gray-900">Your Collection</h1>
+        <div className="container mx-auto px-4 py-8 md:py-16 min-h-[calc(100vh-80px)]">
+            <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-10 font-serif text-gray-900">Your Collection</h1>
 
             {cartItems.length === 0 ? (
                 <div className="text-center py-20 bg-gray-50 rounded-2xl border border-gray-100">
@@ -56,7 +56,7 @@ const CartPage: React.FC = () => {
                                     </Link>
                                     <p className="text-gray-500 text-sm mb-4">Original Artwork</p>
                                     <div className="flex justify-between items-center sm:hidden w-full border-t border-gray-100 pt-4 mt-2">
-                                        <span className="text-xl font-bold text-primary">${item.price}</span>
+                                        <span className="text-xl font-bold text-primary">Rs {item.price.toLocaleString()}</span>
                                         <button
                                             onClick={() => removeFromCart(item.product)}
                                             className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition"
@@ -67,7 +67,7 @@ const CartPage: React.FC = () => {
                                 </div>
 
                                 <div className="hidden sm:flex flex-col items-end space-y-4 ml-6">
-                                    <span className="text-2xl font-bold text-primary font-serif">${item.price}</span>
+                                    <span className="text-2xl font-bold text-primary font-serif">Rs {item.price.toLocaleString()}</span>
                                     <button
                                         onClick={() => removeFromCart(item.product)}
                                         className="text-gray-400 hover:text-red-500 transition-colors flex items-center text-sm group"
@@ -81,13 +81,13 @@ const CartPage: React.FC = () => {
                     </div>
 
                     <div className="lg:col-span-1">
-                        <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 sticky top-24">
+                        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 lg:sticky lg:top-24">
                             <h2 className="text-2xl font-bold mb-6 font-serif">Order Summary</h2>
 
                             <div className="space-y-4 mb-8">
                                 <div className="flex justify-between text-gray-600">
                                     <span>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</span>
-                                    <span className="font-medium text-gray-900">${total}</span>
+                                    <span className="font-medium text-gray-900">Rs {total}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-600">
                                     <span>Shipping</span>
@@ -95,7 +95,7 @@ const CartPage: React.FC = () => {
                                 </div>
                                 <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
                                     <span className="text-lg font-bold text-gray-900">Total</span>
-                                    <span className="text-3xl font-bold text-primary font-serif">${total}</span>
+                                    <span className="text-3xl font-bold text-primary font-serif">Rs {total}</span>
                                 </div>
                             </div>
 

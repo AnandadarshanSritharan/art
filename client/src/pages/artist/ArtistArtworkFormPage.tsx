@@ -26,6 +26,8 @@ const ArtistArtworkFormPage: React.FC = () => {
     const [countInStock, setCountInStock] = useState(1);
     const [description, setDescription] = useState('');
     const [dimensions, setDimensions] = useState('');
+    const [dimensionWidth, setDimensionWidth] = useState('');
+    const [dimensionHeight, setDimensionHeight] = useState('');
     const [medium, setMedium] = useState('');
 
     const [loading, setLoading] = useState(false);
@@ -73,6 +75,14 @@ const ArtistArtworkFormPage: React.FC = () => {
                     setCountInStock(data.stock);
                     setDescription(data.description);
                     setDimensions(data.dimensions || '');
+                    // Parse dimensions if in format "WxH"
+                    if (data.dimensions) {
+                        const parts = data.dimensions.split(/[x×X]/);
+                        if (parts.length === 2) {
+                            setDimensionWidth(parts[0].trim());
+                            setDimensionHeight(parts[1].trim());
+                        }
+                    }
                     setMedium(data.medium || '');
                 } catch (error) {
                     console.error('Failed to fetch artwork', error);
@@ -171,7 +181,7 @@ const ArtistArtworkFormPage: React.FC = () => {
                 category,
                 description,
                 stock: countInStock,
-                dimensions,
+                dimensions: dimensionWidth && dimensionHeight ? `${dimensionWidth} × ${dimensionHeight}` : dimensions,
                 medium,
             };
 
@@ -248,7 +258,7 @@ const ArtistArtworkFormPage: React.FC = () => {
 
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-gray-700 mb-2 font-medium">Price ($) *</label>
+                                    <label className="block text-gray-700 mb-2 font-medium">Price (Rs) *</label>
                                     <input
                                         type="number"
                                         placeholder="0.00"
@@ -276,14 +286,28 @@ const ArtistArtworkFormPage: React.FC = () => {
 
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-gray-700 mb-2 font-medium">Dimensions</label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. 24x36 inches"
-                                        value={dimensions}
-                                        onChange={(e) => setDimensions(e.target.value)}
-                                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                                    />
+                                    <label className="block text-gray-700 mb-2 font-medium">Dimensions (cm)</label>
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="number"
+                                            placeholder="Width"
+                                            value={dimensionWidth}
+                                            onChange={(e) => setDimensionWidth(e.target.value)}
+                                            min="0"
+                                            step="0.1"
+                                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                                        />
+                                        <span className="text-gray-500 font-bold">×</span>
+                                        <input
+                                            type="number"
+                                            placeholder="Height"
+                                            value={dimensionHeight}
+                                            onChange={(e) => setDimensionHeight(e.target.value)}
+                                            min="0"
+                                            step="0.1"
+                                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                                        />
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="block text-gray-700 mb-2 font-medium">Medium</label>
@@ -416,7 +440,7 @@ const ArtistArtworkFormPage: React.FC = () => {
 
                                     <div className="flex justify-between items-baseline border-b pb-3">
                                         <p className="text-2xl font-bold text-primary">
-                                            ${price > 0 ? price.toFixed(2) : '0.00'}
+                                            Rs {price > 0 ? price.toLocaleString() : '0.00'}
                                         </p>
                                         <span className="text-sm bg-gray-200 px-2 py-1 rounded text-gray-700">
                                             {categories.find(c => c._id === category)?.name || 'Category'}
@@ -425,7 +449,7 @@ const ArtistArtworkFormPage: React.FC = () => {
 
                                     <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
                                         <div>
-                                            <span className="font-medium">Dimensions:</span> {dimensions || '-'}
+                                            <span className="font-medium">Dimensions:</span> {dimensionWidth && dimensionHeight ? `${dimensionWidth} × ${dimensionHeight} cm` : dimensions || '-'}
                                         </div>
                                         <div>
                                             <span className="font-medium">Medium:</span> {medium || '-'}
