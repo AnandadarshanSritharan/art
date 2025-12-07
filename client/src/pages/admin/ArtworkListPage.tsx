@@ -185,7 +185,7 @@ const ArtworkListPage: React.FC = () => {
                                     <tr key={artwork._id}>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{artwork._id.substring(0, 10)}...</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{artwork.title}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${artwork.price}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rs {artwork.price.toLocaleString()}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{artwork.category?.name || 'N/A'}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{typeof artwork.artist === 'string' ? artwork.artist : artwork.artist?.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex space-x-4">

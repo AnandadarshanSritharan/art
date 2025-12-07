@@ -97,12 +97,12 @@ const ArtistRegisterPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-stone-50 flex">
+        <div className="min-h-screen bg-stone-50 flex flex-col lg:flex-row">
             {/* Left Side - Registration Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 overflow-y-auto">
+            <div className="w-full lg:w-1/2 flex items-center justify-center px-4 md:px-6 py-8 md:py-12 overflow-y-auto">
                 <div className="w-full max-w-xl">
-                    <div className="mb-8">
-                        <h1 className="text-4xl font-bold mb-2 font-serif text-gray-900">Join as an Artist</h1>
+                    <div className="mb-6 md:mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold mb-2 font-serif text-gray-900">Join as an Artist</h1>
                         <p className="text-gray-500">Share your creativity with the world and start selling your masterpieces.</p>
                     </div>
 
@@ -119,9 +119,9 @@ const ArtistRegisterPage: React.FC = () => {
                         </div>
                     )}
 
-                    <form onSubmit={submitHandler} className="space-y-5">
+                    <form onSubmit={submitHandler} className="space-y-4 md:space-y-5">
                         {/* Name Fields */}
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-gray-700 text-sm font-bold mb-2 ml-1">First Name *</label>
                                 <input
@@ -158,7 +158,7 @@ const ArtistRegisterPage: React.FC = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-gray-700 text-sm font-bold mb-2 ml-1">Password *</label>
                                 <input
@@ -185,7 +185,7 @@ const ArtistRegisterPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-gray-700 text-sm font-bold mb-2 ml-1">Phone Number</label>
                                 <input
@@ -271,7 +271,7 @@ const ArtistRegisterPage: React.FC = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-lg hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-primary text-white py-3.5 rounded-xl font-bold text-base md:text-lg hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? 'Creating Profile...' : 'Complete Registration'}
                         </button>

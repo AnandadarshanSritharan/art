@@ -167,7 +167,7 @@ const ArtworkEditPage: React.FC = () => {
 
                             <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-gray-700 mb-2 font-medium">Price ($) *</label>
+                                    <label className="block text-gray-700 mb-2 font-medium">Price (Rs) *</label>
                                     <input
                                         type="number"
                                         placeholder="0.00"
@@ -320,7 +320,7 @@ const ArtworkEditPage: React.FC = () => {
                                         by {artist || 'Unknown Artist'}
                                     </p>
                                     <p className="text-2xl font-bold text-primary">
-                                        ${price.toFixed(2)}
+                                        Rs {price.toLocaleString()}
                                     </p>
                                     <p className="text-sm text-gray-600">
                                         Category: {categories.find(c => c._id === category)?.name || 'Not selected'}

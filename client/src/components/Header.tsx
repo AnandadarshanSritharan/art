@@ -49,8 +49,8 @@ const Header: React.FC = () => {
 
     return (
         <header className="glass sticky top-0 z-50 transition-all duration-300">
-            <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                <Link to="/" className="text-3xl font-bold font-serif text-primary tracking-tight">
+            <div className="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+                <Link to="/" className="text-2xl md:text-3xl font-bold font-serif text-primary tracking-tight">
                     CeyCanvas
                 </Link>
 
@@ -67,13 +67,13 @@ const Header: React.FC = () => {
                     ))}
                 </nav>
 
-                <div className="flex items-center space-x-8">
-                    {/* Message Icon */}
-                    {userInfo && <MessageIcon />}
+                <div className="flex items-center space-x-4 md:space-x-8">
+                    {/* Message Icon - Hidden on mobile */}
+                    {userInfo && <div className="hidden md:block"><MessageIcon /></div>}
 
-                    {/* Notification Bell for Artists */}
+                    {/* Notification Bell for Artists - Hidden on mobile */}
                     {userInfo?.isArtist && (
-                        <div className="relative" ref={notificationRef}>
+                        <div className="relative hidden md:block" ref={notificationRef}>
                             <button
                                 onClick={() => setShowNotifications(!showNotifications)}
                                 className="relative text-gray-600 hover:text-primary transition duration-300"
@@ -121,7 +121,7 @@ const Header: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Cart Icon */}
+                    {/* Cart Icon - Always visible */}
                     <Link to="/cart" className="relative text-gray-600 hover:text-primary transition duration-300">
                         <ShoppingCart size={22} />
                         {cartItems.length > 0 && (
@@ -131,8 +131,9 @@ const Header: React.FC = () => {
                         )}
                     </Link>
 
+                    {/* Desktop User Menu */}
                     {userInfo ? (
-                        <div className="relative group">
+                        <div className="relative group hidden md:block">
                             <button className="flex items-center space-x-2 text-gray-600 hover:text-primary transition duration-300">
                                 <User size={22} />
                                 <span className="hidden md:block font-medium">{userInfo.name}</span>
@@ -145,6 +146,7 @@ const Header: React.FC = () => {
                                     <Link to="/profile" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition">
                                         Profile
                                     </Link>
+
                                     {userInfo.isAdmin && (
                                         <Link to="/admin/dashboard" className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition">
                                             Admin Dashboard
@@ -167,14 +169,16 @@ const Header: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <Link to="/login" className="px-6 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-gray-800 transition duration-300 shadow-md hover:shadow-lg">
+                        <Link to="/login" className="hidden md:block px-6 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-gray-800 transition duration-300 shadow-md hover:shadow-lg">
                             Login
                         </Link>
                     )}
+
                     {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden text-gray-600 hover:text-primary transition"
+                        className="md:hidden text-gray-600 hover:text-primary transition p-2"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle menu"
                     >
                         {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                     </button>
@@ -182,32 +186,95 @@ const Header: React.FC = () => {
             </div>
 
             {/* Mobile Menu Overlay */}
-            {
-                mobileMenuOpen && (
-                    <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-lg py-4 px-6 flex flex-col space-y-4 animate-fade-in glass">
+            {mobileMenuOpen && (
+                <div className="md:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-lg animate-fade-in glass">
+                    <div className="container mx-auto px-4 py-4 flex flex-col space-y-1">
+                        {/* Navigation Links */}
                         {['Home', 'Shop', 'Artists'].map((item) => (
                             <Link
                                 key={item}
                                 to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                                className="text-lg font-medium text-gray-800 hover:text-primary transition"
+                                className="text-base font-medium text-gray-800 hover:text-primary transition py-3 px-2 rounded-lg hover:bg-gray-50"
                                 onClick={() => setMobileMenuOpen(false)}
                             >
                                 {item}
                             </Link>
                         ))}
-                        {!userInfo && (
-                            <Link
-                                to="/login"
-                                className="text-lg font-medium text-primary hover:text-gray-800 transition"
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                Login
-                            </Link>
+
+                        {/* User Section */}
+                        {userInfo ? (
+                            <>
+                                <div className="border-t border-gray-100 my-2"></div>
+                                <div className="px-2 py-2">
+                                    <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">Account</p>
+                                </div>
+                                <Link
+                                    to="/profile"
+                                    className="text-base font-medium text-gray-800 hover:text-primary transition py-3 px-2 rounded-lg hover:bg-gray-50"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    Profile
+                                </Link>
+
+                                {userInfo.isArtist && (
+                                    <>
+                                        <Link
+                                            to="/artist/dashboard"
+                                            className="text-base font-medium text-gray-800 hover:text-primary transition py-3 px-2 rounded-lg hover:bg-gray-50 flex items-center justify-between"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            <span>Artist Dashboard</span>
+                                            {pendingOrdersCount > 0 && (
+                                                <span className="bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                                                    {pendingOrdersCount}
+                                                </span>
+                                            )}
+                                        </Link>
+                                        <Link
+                                            to="/artist/orders"
+                                            className="text-base font-medium text-gray-800 hover:text-primary transition py-3 px-2 rounded-lg hover:bg-gray-50"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            Artist Orders
+                                        </Link>
+                                    </>
+                                )}
+                                {userInfo.isAdmin && (
+                                    <Link
+                                        to="/admin/dashboard"
+                                        className="text-base font-medium text-gray-800 hover:text-primary transition py-3 px-2 rounded-lg hover:bg-gray-50"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        Admin Dashboard
+                                    </Link>
+                                )}
+                                <div className="border-t border-gray-100 my-2"></div>
+                                <button
+                                    onClick={() => {
+                                        handleLogout();
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    className="text-base font-medium text-red-600 hover:text-red-700 transition py-3 px-2 rounded-lg hover:bg-red-50 text-left w-full"
+                                >
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <div className="border-t border-gray-100 my-2"></div>
+                                <Link
+                                    to="/login"
+                                    className="text-base font-medium text-white bg-primary hover:bg-gray-800 transition py-3 px-4 rounded-lg text-center"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                >
+                                    Login
+                                </Link>
+                            </>
                         )}
                     </div>
-                )
-            }
-        </header >
+                </div>
+            )}
+        </header>
     );
 };
 

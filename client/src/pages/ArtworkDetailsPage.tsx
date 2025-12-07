@@ -93,10 +93,10 @@ const ArtworkDetailsPage: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto px-6 py-12 animate-fade-in">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="container mx-auto px-4 md:px-6 py-8 md:py-12 animate-fade-in">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start">
                 {/* Left Column: Image Gallery */}
-                <div className="space-y-6">
+                <div className="space-y-4 md:space-y-6">
                     <div className="relative bg-gray-50 rounded-xl overflow-hidden shadow-sm border border-gray-100 group">
                         <ImageZoom
                             src={getImageUrl(activeImage)}
@@ -109,13 +109,13 @@ const ArtworkDetailsPage: React.FC = () => {
                             <>
                                 <button
                                     onClick={handlePrevImage}
-                                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                                    className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-2 md:p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
                                 >
                                     <ChevronLeft size={24} />
                                 </button>
                                 <button
                                     onClick={handleNextImage}
-                                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
+                                    className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-2 md:p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110"
                                 >
                                     <ChevronRight size={24} />
                                 </button>
@@ -146,7 +146,7 @@ const ArtworkDetailsPage: React.FC = () => {
                 {/* Right Column: Details */}
                 <div className="space-y-6 max-w-xl">
                     <div>
-                        <h1 className="text-3xl font-bold mb-3 font-serif text-gray-900 leading-tight">{artwork.title}</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold mb-3 font-serif text-gray-900 leading-tight">{artwork.title}</h1>
                         <p className="text-base text-gray-600 flex items-center space-x-2">
                             <span>by</span>
                             <span className="font-semibold text-gray-900 border-b border-gray-300 pb-0.5 hover:border-primary transition cursor-pointer">
@@ -155,8 +155,8 @@ const ArtworkDetailsPage: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="flex items-baseline space-x-4 border-b border-gray-100 pb-4">
-                        <p className="text-3xl text-primary font-serif font-bold">${artwork.price.toFixed(2)}</p>
+                    <div className="flex flex-wrap items-baseline gap-3 md:gap-4 border-b border-gray-100 pb-4">
+                        <p className="text-2xl md:text-3xl text-primary font-serif font-bold">Rs {artwork.price.toLocaleString()}</p>
                         {artwork.stock <= 3 && artwork.stock > 0 && (
                             <span className="text-sm font-medium text-orange-500 bg-orange-50 px-3 py-1 rounded-full">
                                 Only {artwork.stock} left!

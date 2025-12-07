@@ -312,7 +312,7 @@ const ProfilePage: React.FC = () => {
                                                         {new Date(order.createdAt).toLocaleDateString()}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
-                                                        ${order.totalPrice.toFixed(2)}
+                                                        Rs {order.totalPrice.toLocaleString()}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         {order.isDelivered ? (

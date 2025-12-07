@@ -45,7 +45,7 @@ const AllArtworksPage: React.FC = () => {
     const [page, setPage] = useState(1);
 
     // Filters
-    const [showFilters, setShowFilters] = useState(true);
+    const [showFilters, setShowFilters] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchInput, setSearchInput] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -195,10 +195,11 @@ const AllArtworksPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-stone-50">
-            <div className="flex">
-                {/* Filter Panel */}
-                <div className={`${showFilters ? 'w-80' : 'w-0'} transition-all duration-300 overflow-hidden bg-white border-r border-gray-200 flex-shrink-0`}>
-                    <div className="p-6 space-y-6 h-screen overflow-y-auto">
+            <div className="flex relative">
+                {/* Filter Panel - Desktop sidebar, Mobile overlay */}
+                <div className={`${showFilters ? 'translate-x-0' : '-translate-x-full'
+                    } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 ${showFilters ? 'w-80' : 'w-80 lg:w-0'} transition-all duration-300 bg-white border-r border-gray-200 flex-shrink-0 ${showFilters ? '' : 'lg:border-0'}`}>
+                    <div className={`p-4 md:p-6 space-y-4 md:space-y-6 h-screen overflow-y-auto pt-20 lg:pt-4 md:lg:pt-6 ${showFilters ? '' : 'lg:hidden'}`}>
                         {/* Search Bar */}
                         <div>
                             <label className="block text-sm font-bold text-gray-700 mb-2">Search</label>
@@ -301,10 +302,18 @@ const AllArtworksPage: React.FC = () => {
                     </div>
                 </div>
 
+                {/* Mobile Overlay */}
+                {showFilters && (
+                    <div
+                        className="lg:hidden fixed inset-0 bg-black/50 z-30"
+                        onClick={() => setShowFilters(false)}
+                    />
+                )}
+
                 {/* Main Content */}
                 <div className="flex-1">
                     {/* Header */}
-                    <div className="bg-white border-b border-gray-200 px-6 py-6">
+                    <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-4 md:py-6">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4">
                                 <button
@@ -316,7 +325,7 @@ const AllArtworksPage: React.FC = () => {
                                     </svg>
                                     {showFilters ? 'Hide' : 'Show'} Filters
                                 </button>
-                                <h1 className="text-2xl font-bold font-serif text-gray-900">Collection</h1>
+                                <h1 className="text-xl md:text-2xl font-bold font-serif text-gray-900">Collection</h1>
                             </div>
                             <p className="text-sm text-gray-500">
                                 {artworks.length} {artworks.length === 1 ? 'artwork' : 'artworks'}
@@ -325,7 +334,7 @@ const AllArtworksPage: React.FC = () => {
                     </div>
 
                     {/* Artworks Grid */}
-                    <div className="p-6">
+                    <div className="p-4 md:p-6">
                         {loading ? (
                             <div className="flex justify-center items-center h-64">
                                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -379,7 +388,7 @@ const AllArtworksPage: React.FC = () => {
                                                     </p>
                                                     <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                                                         <span className="text-xl font-bold text-gray-900 font-serif">
-                                                            ${artwork.price.toLocaleString()}
+                                                            Rs {artwork.price.toLocaleString()}
                                                         </span>
                                                         <span className="text-xs text-gray-500 uppercase tracking-wider">
                                                             {artwork.category.name}

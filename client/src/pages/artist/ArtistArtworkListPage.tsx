@@ -163,7 +163,7 @@ const ArtistArtworkListPage: React.FC = () => {
                                             <div className="text-sm text-gray-600">{artwork.category?.name || 'Uncategorized'}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">${artwork.price}</div>
+                                            <div className="text-sm text-gray-900">Rs {artwork.price.toLocaleString()}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-900">{artwork.stock}</div>

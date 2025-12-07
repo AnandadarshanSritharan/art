@@ -261,7 +261,7 @@ const ShippingPage: React.FC = () => {
                                             <p className="text-xs text-gray-500">Qty: {item.qty}</p>
                                         </div>
                                         <div className="text-sm font-bold text-primary whitespace-nowrap">
-                                            ${(item.price * item.qty).toFixed(2)}
+                                            Rs {(item.price * item.qty).toLocaleString()}
                                         </div>
                                     </div>
                                 ))}
@@ -270,7 +270,7 @@ const ShippingPage: React.FC = () => {
                             <div className="border-t border-gray-100 pt-4 space-y-3">
                                 <div className="flex justify-between text-gray-600 text-sm">
                                     <span>Subtotal</span>
-                                    <span>${itemsPrice.toFixed(2)}</span>
+                                    <span>Rs {itemsPrice.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-600 text-sm">
                                     <span>Shipping</span>
@@ -280,7 +280,7 @@ const ShippingPage: React.FC = () => {
                                 </div>
                                 <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                                     <span className="text-lg font-bold text-gray-900">Total</span>
-                                    <span className="text-2xl font-bold text-primary font-serif">${itemsPrice.toFixed(2)}</span>
+                                    <span className="text-2xl font-bold text-primary font-serif">Rs {itemsPrice.toLocaleString()}</span>
                                 </div>
                             </div>
 

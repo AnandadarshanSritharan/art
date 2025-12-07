@@ -185,8 +185,8 @@ const OrderDetailsPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="text-right mt-4 sm:mt-0 w-full sm:w-auto">
-                                        <p className="text-lg font-bold text-gray-900">${(item.qty * item.price).toFixed(2)}</p>
-                                        <p className="text-xs text-gray-400">${item.price} each</p>
+                                        <p className="text-lg font-bold text-gray-900">Rs {(item.qty * item.price).toLocaleString()}</p>
+                                        <p className="text-xs text-gray-400">Rs {item.price.toLocaleString()} each</p>
                                     </div>
                                 </div>
                             ))}
@@ -202,20 +202,20 @@ const OrderDetailsPage: React.FC = () => {
                         <div className="space-y-4 mb-8">
                             <div className="flex justify-between text-gray-600">
                                 <span>Items Subtotal</span>
-                                <span className="font-medium">${order.itemsPrice.toFixed(2)}</span>
+                                <span className="font-medium">Rs {order.itemsPrice.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span>Shipping</span>
-                                <span className="font-medium">${order.shippingPrice.toFixed(2)}</span>
+                                <span className="font-medium">Rs {order.shippingPrice.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span>Tax</span>
-                                <span className="font-medium">${order.taxPrice.toFixed(2)}</span>
+                                <span className="font-medium">Rs {order.taxPrice.toLocaleString()}</span>
                             </div>
 
                             <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
                                 <span className="text-lg font-bold text-gray-900">Total</span>
-                                <span className="text-3xl font-bold text-primary font-serif">${order.totalPrice.toFixed(2)}</span>
+                                <span className="text-3xl font-bold text-primary font-serif">Rs {order.totalPrice.toLocaleString()}</span>
                             </div>
                         </div>
 

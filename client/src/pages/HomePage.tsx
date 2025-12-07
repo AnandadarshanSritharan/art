@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
     return (
         <div className="flex flex-col items-center w-full">
             {/* Hero Section */}
-            <section className="w-full h-screen relative flex items-center justify-center bg-gray-900 overflow-hidden">
+            <section className="w-full min-h-screen md:h-screen relative flex items-center justify-center bg-gray-900 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img
                         src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
@@ -60,12 +60,12 @@ const HomePage: React.FC = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent"></div>
                 </div>
-                <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+                <div className="relative z-10 text-center px-4 md:px-6 max-w-4xl mx-auto py-20 md:py-0">
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className="text-6xl md:text-8xl font-bold font-serif mb-8 text-white tracking-tight leading-tight"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold font-serif mb-6 md:mb-8 text-white tracking-tight leading-tight"
                     >
                         Discover Unique <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-yellow-200">Masterpieces</span>
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
+                        className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-8 md:mb-10 max-w-2xl mx-auto font-light leading-relaxed"
                     >
                         Curated collection of original paintings and digital artworks from emerging artists worldwide.
                     </motion.p>
@@ -86,13 +86,13 @@ const HomePage: React.FC = () => {
                     >
                         <Link
                             to="/shop"
-                            className="bg-white text-gray-900 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
+                            className="bg-white text-gray-900 px-8 md:px-10 py-3 md:py-4 rounded-full text-base md:text-lg font-bold hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
                         >
                             Explore Collection
                         </Link>
                         <Link
                             to="/artists"
-                            className="bg-transparent border-2 border-white text-white px-10 py-4 rounded-full text-lg font-bold hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
+                            className="bg-transparent border-2 border-white text-white px-8 md:px-10 py-3 md:py-4 rounded-full text-base md:text-lg font-bold hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
                         >
                             Meet Artists
                         </Link>
@@ -101,10 +101,10 @@ const HomePage: React.FC = () => {
             </section>
 
             {/* Featured Categories */}
-            <section className="container mx-auto px-6 py-24">
-                <div className="text-center mb-16">
+            <section className="container mx-auto px-4 md:px-6 py-16 md:py-24">
+                <div className="text-center mb-12 md:mb-16">
                     <span className="text-accent font-bold tracking-widest uppercase text-sm mb-2 block">Curated Collections</span>
-                    <h2 className="text-4xl md:text-5xl font-bold font-serif text-gray-900">Browse by Category</h2>
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-serif text-gray-900">Browse by Category</h2>
                 </div>
 
                 {loading ? (
