@@ -1,10 +1,15 @@
 {
     "version": 2,
-    "buildCommand": "cd server && npm install",
-    "rewrites": [
+    "builds": [
         {
-            "source": "/(.*)",
-            "destination": "/server/api/index.js"
+            "src": "server/api/index.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/server/api/index.js"
         }
     ]
 }
