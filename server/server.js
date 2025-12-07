@@ -9,8 +9,6 @@ const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 
-connectDB();
-
 const app = express();
 const server = http.createServer(app);
 const allowedOrigins = [
@@ -35,6 +33,17 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+
+// Connect to database on first request
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error('Database connection failed:', error);
+        res.status(500).json({ message: 'Database connection failed' });
+    }
+});
 
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
