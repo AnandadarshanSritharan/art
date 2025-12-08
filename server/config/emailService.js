@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { getWelcomeEmailTemplate } = require('../templates/welcomeEmailTemplate');
+
 
 let transporter = null;
 
@@ -52,6 +52,7 @@ const getTransporter = () => {
  */
 const sendWelcomeEmail = async (name, email) => {
     try {
+        const { getWelcomeEmailTemplate } = require('../templates/welcomeEmailTemplate');
         const mailOptions = {
             from: `"${process.env.SMTP_FROM_NAME}" <${process.env.SMTP_FROM_EMAIL}>`,
             to: email,
