@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { sendWelcomeEmail, sendOTPEmail } = require('../config/emailService');
+const { createOTP, verifyOTP, deleteOTP, getRemainingTime } = require('../utils/otpService');
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -33,7 +35,7 @@ const authUser = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc    Register a new user
+// @desc    Register a new user (or initiate artist registration with OTP)
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
@@ -52,36 +54,158 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('You must accept the terms and conditions to register as an artist');
     }
 
+    // If registering as artist, send OTP instead of creating account immediately
+    if (isArtist) {
+        const artistData = {
+            name,
+            email,
+            password,
+            bio: bio || '',
+            phone: phone || '',
+            address: address || '',
+            country: country || '',
+            termsAccepted: termsAccepted || false,
+            termsVersion: termsVersion || null
+        };
+
+        // Create OTP and store artist data
+        const otp = await createOTP(email, artistData);
+
+        // Send OTP email
+        await sendOTPEmail(name, email, otp);
+
+        res.status(200).json({
+            message: 'OTP sent to your email. Please verify to complete registration.',
+            email: email,
+            requiresOTP: true
+        });
+    } else {
+        // Regular user registration (no OTP required)
+        const user = await User.create({
+            name,
+            email,
+            password,
+            isArtist: false,
+            bio: '',
+        });
+
+        if (user) {
+            // Send welcome email (don't block registration if email fails)
+            sendWelcomeEmail(user.name, user.email).catch(error => {
+                console.error('Failed to send welcome email, but user was created successfully:', error);
+            });
+
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                isArtist: user.isArtist,
+                bio: user.bio,
+                token: generateToken(user._id),
+            });
+        } else {
+            res.status(400);
+            throw new Error('Invalid user data');
+        }
+    }
+});
+
+// @desc    Verify artist OTP and create account
+// @route   POST /api/auth/verify-artist-otp
+// @access  Public
+const verifyArtistOTP = asyncHandler(async (req, res) => {
+    const { email, otp } = req.body;
+
+    if (!email || !otp) {
+        res.status(400);
+        throw new Error('Email and OTP are required');
+    }
+
+    // Verify OTP and get artist data
+    const artistData = await verifyOTP(email, otp);
+
+    if (!artistData) {
+        res.status(400);
+        throw new Error('Invalid or expired OTP');
+    }
+
+    // Check if user was created in the meantime
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        await deleteOTP(email);
+        res.status(400);
+        throw new Error('User already exists');
+    }
+
+    // Create artist account
     const user = await User.create({
-        name,
-        email,
-        password,
-        isArtist: isArtist || false,
-        bio: bio || '',
-        phone: phone || '',
-        address: address || '',
-        country: country || '',
-        termsAccepted: termsAccepted || false,
-        termsVersion: termsVersion || null
+        name: artistData.name,
+        email: artistData.email,
+        password: artistData.password,
+        isArtist: true,
+        bio: artistData.bio,
+        phone: artistData.phone,
+        address: artistData.address,
+        country: artistData.country,
+        termsAccepted: artistData.termsAccepted,
+        termsVersion: artistData.termsVersion
     });
 
     if (user) {
+        // Delete OTP after successful registration
+        await deleteOTP(email);
+
+        // Send welcome email (don't block registration if email fails)
+        sendWelcomeEmail(user.name, user.email).catch(error => {
+            console.error('Failed to send welcome email, but user was created successfully:', error);
+        });
+
         res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            isArtist: user.isArtist,
-            bio: user.bio,
-            phone: user.phone,
-            address: user.address,
-            country: user.country,
-            token: generateToken(user._id),
+            message: 'Artist account created successfully',
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isArtist: user.isArtist,
+            }
         });
     } else {
         res.status(400);
-        throw new Error('Invalid user data');
+        throw new Error('Failed to create artist account');
     }
+});
+
+// @desc    Resend OTP for artist registration
+// @route   POST /api/auth/resend-artist-otp
+// @access  Public
+const resendArtistOTP = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        res.status(400);
+        throw new Error('Email is required');
+    }
+
+    // Check if there's existing OTP data
+    const OTP = require('../models/OTP');
+    const existingOTP = await OTP.findOne({ email });
+
+    if (!existingOTP) {
+        res.status(404);
+        throw new Error('No pending registration found for this email');
+    }
+
+    // Create new OTP with same artist data
+    const otp = await createOTP(email, existingOTP.artistData);
+
+    // Send OTP email
+    await sendOTPEmail(existingOTP.artistData.name, email, otp);
+
+    res.status(200).json({
+        message: 'New OTP sent to your email',
+        email: email
+    });
 });
 
 // @desc    Get user profile
@@ -198,10 +322,11 @@ const deleteUser = asyncHandler(async (req, res) => {
 module.exports = {
     authUser,
     registerUser,
+    verifyArtistOTP,
+    resendArtistOTP,
     getUserProfile,
     updateUserProfile,
     getUsers,
-    getSupportUser,
     getSupportUser,
     getUserById,
     deleteUser

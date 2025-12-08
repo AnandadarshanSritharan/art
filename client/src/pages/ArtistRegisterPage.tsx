@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import useStore from '../store/useStore';
+import OTPVerificationModal from '../components/OTPVerificationModal';
 
 const ArtistRegisterPage: React.FC = () => {
     const [firstName, setFirstName] = useState('');
@@ -15,6 +16,8 @@ const ArtistRegisterPage: React.FC = () => {
     const [bio, setBio] = useState('');
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [showTermsModal, setShowTermsModal] = useState(false);
+    const [showOTPModal, setShowOTPModal] = useState(false);
+    const [registeredEmail, setRegisteredEmail] = useState('');
     const [terms, setTerms] = useState<any>(null);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
@@ -87,13 +90,32 @@ const ArtistRegisterPage: React.FC = () => {
                 termsAccepted: true,
                 termsVersion: terms?.version
             });
-            setUserInfo(data);
-            navigate('/artist/dashboard');
+
+            // Check if OTP is required
+            if (data.requiresOTP) {
+                setRegisteredEmail(data.email);
+                setShowOTPModal(true);
+            } else {
+                // Regular user flow (shouldn't happen for artists, but just in case)
+                setUserInfo(data);
+                navigate('/artist/dashboard');
+            }
         } catch (err: any) {
             setError(err.response?.data?.message || 'Registration failed');
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleOTPSuccess = () => {
+        setShowOTPModal(false);
+        // Redirect to login page with success message
+        navigate('/login', { state: { message: 'Registration successful! Please login to continue.' } });
+    };
+
+    const handleOTPClose = () => {
+        setShowOTPModal(false);
+        setMessage('Registration incomplete. Please verify your email to complete registration.');
     };
 
     return (
@@ -356,6 +378,15 @@ const ArtistRegisterPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* OTP Verification Modal */}
+            {showOTPModal && (
+                <OTPVerificationModal
+                    email={registeredEmail}
+                    onSuccess={handleOTPSuccess}
+                    onClose={handleOTPClose}
+                />
             )}
         </div>
     );
