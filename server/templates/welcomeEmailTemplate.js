@@ -77,7 +77,7 @@ const getWelcomeEmailTemplate = (name) => {
                                 <a href="mailto:support@ceycanvas.com" style="color: #667eea; text-decoration: none;">support@ceycanvas.com</a>
                             </p>
                             <p style="margin: 0; color: #999999; font-size: 12px;">
-                                © ${new Date().getFullYear()} CeyCanvas. All rights reserved.
+                                © 2025 CeyCanvas. All rights reserved.
                             </p>
                         </td>
                     </tr>
