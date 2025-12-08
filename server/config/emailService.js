@@ -52,43 +52,27 @@ const getTransporter = () => {
  * @returns {Promise} - Promise that resolves when email is sent
  */
 const sendWelcomeEmail = async (name, email) => {
-    const html = `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to CeyCanvas</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #333;">Welcome to CeyCanvas, ${name}! 🎨</h1>
-        <p>We're excited to have you join our art community.</p>
-        <p>Start exploring amazing artworks today!</p>
-        <p style="margin-top: 30px; color: #666; font-size: 12px;">
-            © 2025 CeyCanvas. All rights reserved.
-        </p>
-    </div>
-</body>
-</html>
-  `;
     try {
-        //const { getWelcomeEmailTemplate } = require('../templates/welcomeEmailTemplate');
+        // Use EXACT same pattern as OTP email
+        const { getWelcomeEmailTemplate } = require('../templates/welcomeEmailTemplate');
+
         const mailOptions = {
             from: `"${process.env.SMTP_FROM_NAME}" <${process.env.SMTP_FROM_EMAIL}>`,
             to: email,
             subject: 'Welcome to CeyCanvas - Your Art Journey Begins! 🎨',
-            html: html,
+            html: getWelcomeEmailTemplate(name),
         };
 
         const emailTransporter = getTransporter();
         const info = await emailTransporter.sendMail(mailOptions);
         console.log('✅ Welcome email sent successfully to:', email);
         console.log('Message ID:', info.messageId);
+        // Return EXACTLY like OTP function
         return { success: true, messageId: info.messageId };
     } catch (error) {
         console.error('❌ Error sending welcome email to:', email);
         console.error('Error details:', error.message);
+        // Return EXACTLY like OTP function
         return { success: false, error: error.message };
     }
 };
