@@ -91,9 +91,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
         if (user) {
             // Send welcome email (don't block registration if email fails)
-            sendWelcomeEmail(user.name, user.email).catch(error => {
-                console.error('Failed to send welcome email, but user was created successfully:', error);
-            });
+            // sendWelcomeEmail(user.name, user.email).catch(error => {
+            //     console.error('Failed to send welcome email, but user was created successfully:', error);
+            // });
 
             res.status(201).json({
                 _id: user._id,
@@ -104,6 +104,14 @@ const registerUser = asyncHandler(async (req, res) => {
                 bio: user.bio,
                 token: generateToken(user._id),
             });
+
+            process.nextTick(() => {
+                console.log(`[NEXT TICK] Sending welcome email to ${user.email}`);
+                sendWelcomeEmail(user.name, user.email)
+                    .then(() => console.log(`✅ Email sent to ${user.email}`))
+                    .catch(err => console.error(`❌ Email error:`, err.message));
+            });
+
         } else {
             res.status(400);
             throw new Error('Invalid user data');
